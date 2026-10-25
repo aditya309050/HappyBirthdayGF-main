@@ -1,49 +1,5 @@
-// Audio Player Controller with Barbaad (Saiyaara) integration
-// Supports local ./barbaad.mp3, YouTube Barbaad Official Stream, and WebAudio synth fallback
-
-let ytPlayer = null;
-let ytReady = false;
-let ytPollingInterval = null;
-let activeSource = 'html5'; // 'html5' | 'youtube' | 'synth'
-let isPlaying = false;
-let audioCtx = null;
-let melodyInterval = null;
-
-// Initialize YouTube IFrame Player for Barbaad (Saiyaara)
-window.onYouTubeIframeAPIReady = function () {
-    try {
-        ytPlayer = new YT.Player('yt-player', {
-            height: '1',
-            width: '1',
-            videoId: '0v5eHPfy5Lk', // Official "Barbaad" - Saiyaara track
-            playerVars: {
-                'playsinline': 1,
-                'controls': 0,
-                'disablekb': 1,
-                'fs': 0,
-                'rel': 0,
-                'origin': window.location.origin && window.location.origin !== 'null' ? window.location.origin : '*'
-            },
-            events: {
-                'onReady': () => {
-                    ytReady = true;
-                    console.log('YouTube Barbaad player ready');
-                },
-                'onStateChange': (e) => {
-                    if (e.data === YT.PlayerState.PLAYING) {
-                        setUIPlayState(true);
-                        startYTPolling();
-                    } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
-                        setUIPlayState(false);
-                        stopYTPolling();
-                    }
-                }
-            }
-        });
-    } catch (err) {
-        console.warn('YouTube API init error:', err);
-    }
-};
+// Audio Player Controller for Barbaad (Saiyaara)
+// Plays local barbaad.mp3 with autoplay, interaction unlocker, and progress scrubbing
 
 document.addEventListener('DOMContentLoaded', () => {
     const playBtn = document.getElementById('play-btn');
@@ -55,8 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentTimeEl = document.getElementById('current-time');
     const totalDurationEl = document.getElementById('total-duration');
     const albumArt = document.querySelector('.player-album-art');
+    const musicCaption = document.getElementById('music-caption');
     const seeAlbumBtn = document.getElementById('see-album-btn');
     const ambientContainer = document.getElementById('ambient-container');
+
+    let isPlaying = false;
 
     // Format seconds to mm:ss
     function formatTime(seconds) {
@@ -67,151 +26,63 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Toggle Play/Pause UI state
-    window.setUIPlayState = function (playing) {
+    function setUIPlayState(playing) {
         isPlaying = playing;
         if (playing) {
             if (playIcon) playIcon.style.display = 'none';
             if (pauseIcon) pauseIcon.style.display = 'block';
             if (albumArt) albumArt.style.animation = 'pulseAlbum 2s ease-in-out infinite';
+            if (musicCaption) {
+                musicCaption.textContent = 'playing for you — i picked this one because it always reminds me of you. 🎵';
+            }
         } else {
             if (playIcon) playIcon.style.display = 'block';
             if (pauseIcon) pauseIcon.style.display = 'none';
             if (albumArt) albumArt.style.animation = 'none';
-        }
-    };
-
-    // YouTube Progress Polling
-    function startYTPolling() {
-        stopYTPolling();
-        ytPollingInterval = setInterval(() => {
-            if (ytPlayer && typeof ytPlayer.getCurrentTime === 'function' && typeof ytPlayer.getDuration === 'function') {
-                const current = ytPlayer.getCurrentTime();
-                const duration = ytPlayer.getDuration();
-                if (duration > 0) {
-                    const percent = (current / duration) * 100;
-                    if (progressBar) progressBar.style.width = `${percent}%`;
-                    if (currentTimeEl) currentTimeEl.textContent = formatTime(current);
-                    if (totalDurationEl) totalDurationEl.textContent = formatTime(duration);
-                }
+            if (musicCaption) {
+                musicCaption.textContent = 'press play — i picked this one because it always reminds me of you.';
             }
-        }, 250);
-    }
-
-    function stopYTPolling() {
-        if (ytPollingInterval) {
-            clearInterval(ytPollingInterval);
-            ytPollingInterval = null;
         }
     }
 
-    // Synthetic Romantic Melody Fallback
-    function startSyntheticMelody() {
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-
-        const notes = [261.63, 329.63, 392.00, 523.25, 440.00, 392.00, 349.23, 329.63];
-        let noteIndex = 0;
-        let elapsed = 0;
-
-        melodyInterval = setInterval(() => {
-            if (!isPlaying) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(notes[noteIndex % notes.length], audioCtx.currentTime);
-
-            gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.12, audioCtx.currentTime + 0.05);
-            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.2);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            osc.start();
-            osc.stop(audioCtx.currentTime + 1.3);
-
-            noteIndex++;
-            elapsed += 0.8;
-            if (currentTimeEl) currentTimeEl.textContent = formatTime(elapsed);
-            if (progressBar) progressBar.style.width = `${(elapsed % 180) / 180 * 100}%`;
-        }, 800);
-    }
-
-    function stopSyntheticMelody() {
-        if (melodyInterval) {
-            clearInterval(melodyInterval);
-            melodyInterval = null;
-        }
-    }
-
-    // Playback Controller
+    // Play function
     function playTrack() {
-        // 1. Try local audio first (barbaad.mp3)
-        if (audio) {
-            const playPromise = audio.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    activeSource = 'html5';
-                    setUIPlayState(true);
-                }).catch(err => {
-                    console.log('Local audio file unavailable, using YouTube Barbaad stream:', err);
-                    playYouTube();
-                });
-                return;
-            }
-        }
-        playYouTube();
+        if (!audio) return;
+        audio.play().then(() => {
+            setUIPlayState(true);
+        }).catch(err => {
+            console.log('Autoplay prevented by browser, waiting for user gesture:', err);
+            setUIPlayState(false);
+        });
     }
 
-    function playYouTube() {
-        if (ytPlayer && ytReady && typeof ytPlayer.playVideo === 'function') {
-            activeSource = 'youtube';
-            ytPlayer.playVideo();
-            setUIPlayState(true);
-            startYTPolling();
-        } else {
-            console.log('Activating romantic synth preview fallback');
-            activeSource = 'synth';
-            setUIPlayState(true);
-            startSyntheticMelody();
-        }
-    }
-
+    // Pause function
     function pauseTrack() {
-        if (activeSource === 'html5' && audio) {
-            audio.pause();
-        } else if (activeSource === 'youtube' && ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
-            ytPlayer.pauseVideo();
-            stopYTPolling();
-        } else if (activeSource === 'synth') {
-            stopSyntheticMelody();
-        }
+        if (!audio) return;
+        audio.pause();
         setUIPlayState(false);
     }
 
-    // Button Click Listener
+    // Play/Pause button click
     if (playBtn) {
-        playBtn.addEventListener('click', () => {
-            if (isPlaying) {
-                pauseTrack();
-            } else {
+        playBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (audio.paused) {
                 playTrack();
+            } else {
+                pauseTrack();
             }
         });
     }
 
-    // HTML5 Audio Events
+    // Progress Bar & Time Update
     if (audio) {
         audio.addEventListener('timeupdate', () => {
-            if (activeSource === 'html5' && audio.duration) {
+            if (audio.duration) {
                 const percent = (audio.currentTime / audio.duration) * 100;
                 if (progressBar) progressBar.style.width = `${percent}%`;
                 if (currentTimeEl) currentTimeEl.textContent = formatTime(audio.currentTime);
+                if (totalDurationEl) totalDurationEl.textContent = formatTime(audio.duration);
             }
         });
 
@@ -221,27 +92,49 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        audio.addEventListener('play', () => setUIPlayState(true));
+        audio.addEventListener('pause', () => setUIPlayState(false));
+
         audio.addEventListener('ended', () => {
             setUIPlayState(false);
             if (progressBar) progressBar.style.width = '0%';
+            if (currentTimeEl) currentTimeEl.textContent = '0:00';
         });
     }
 
-    // Scrubbing on Progress Bar
-    if (progressContainer) {
+    // Scrubbing / Seeking on progress bar
+    if (progressContainer && audio) {
         progressContainer.addEventListener('click', (e) => {
+            e.stopPropagation();
             const rect = progressContainer.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
             const fraction = Math.max(0, Math.min(1, clickX / rect.width));
-
-            if (activeSource === 'html5' && audio && audio.duration) {
+            if (audio.duration) {
                 audio.currentTime = fraction * audio.duration;
-            } else if (activeSource === 'youtube' && ytPlayer && typeof ytPlayer.getDuration === 'function') {
-                const newTime = fraction * ytPlayer.getDuration();
-                ytPlayer.seekTo(newTime, true);
             }
         });
     }
+
+    // Autoplay Attempt on Page Load
+    setTimeout(() => {
+        playTrack();
+    }, 400);
+
+    // Interaction fallback: Starts music immediately on first touch/tap/click/scroll anywhere
+    const unlockOnGesture = () => {
+        if (audio && audio.paused) {
+            playTrack();
+        }
+        window.removeEventListener('click', unlockOnGesture);
+        window.removeEventListener('touchstart', unlockOnGesture);
+        window.removeEventListener('pointerdown', unlockOnGesture);
+        window.removeEventListener('scroll', unlockOnGesture);
+    };
+
+    window.addEventListener('click', unlockOnGesture, { once: true });
+    window.addEventListener('touchstart', unlockOnGesture, { once: true });
+    window.addEventListener('pointerdown', unlockOnGesture, { once: true });
+    window.addEventListener('scroll', unlockOnGesture, { once: true });
 
     // Transition to Photo Album (last.html)
     if (seeAlbumBtn) {
