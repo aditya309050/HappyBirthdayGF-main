@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Card for Muskan 🌸</title>
+    
+    <!-- Google Fonts for Elegant Serif, Handwritten Accents & Modern Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <link rel="stylesheet" href="./cause.css">
+</head>
+<body>
+    <!-- Ambient Floating Background Particles -->
+    <div class="ambient-background" id="ambient-container"></div>
+
+    <main class="page-wrapper">
+        <!-- Aesthetic Center Card -->
+        <article class="birthday-card">
+            <!-- Decorative Corner Paper Flowers -->
+            <div class="corner-flower flower-top-left" aria-hidden="true">
+                <svg viewBox="0 0 100 100" class="flower-svg">
+                    <!-- Outer Layer -->
+                    <g fill="#fff0f4" stroke="#d991a2" stroke-width="2">
+                        <circle cx="50" cy="24" r="16"/>
+                        <circle cx="76" cy="50" r="16"/>
+                        <circle cx="50" cy="76" r="16"/>
+                        <circle cx="24" cy="50" r="16"/>
+                        <circle cx="68" cy="32" r="16"/>
+                        <circle cx="68" cy="68" r="16"/>
+                        <circle cx="32" cy="68" r="16"/>
+                        <circle cx="32" cy="32" r="16"/>
+                    </g>
+                    <!-- Inner Layer -->
+                    <g fill="#ffdbe4" stroke="#d991a2" stroke-width="2">
+                        <circle cx="50" cy="34" r="11"/>
+                        <circle cx="66" cy="50" r="11"/>
+                        <circle cx="50" cy="66" r="11"/>
+                        <circle cx="34" cy="50" r="11"/>
+                    </g>
+                    <!-- Center Core -->
+                    <circle cx="50" cy="50" r="9" fill="#fbc4ab" stroke="#d991a2" stroke-width="2"/>
+                </svg>
+            </div>
+
+            <div class="corner-flower flower-top-right" aria-hidden="true">
+                <svg viewBox="0 0 100 100" class="flower-svg">
+                    <!-- Outer Layer -->
+                    <g fill="#fff6ee" stroke="#cca17d" stroke-width="2">
+                        <circle cx="50" cy="24" r="16"/>
+                        <circle cx="76" cy="50" r="16"/>
+                        <circle cx="50" cy="76" r="16"/>
+                        <circle cx="24" cy="50" r="16"/>
+                        <circle cx="68" cy="32" r="16"/>
+                        <circle cx="68" cy="68" r="16"/>
+                        <circle cx="32" cy="68" r="16"/>
+                        <circle cx="32" cy="32" r="16"/>
+                    </g>
+                    <!-- Inner Layer -->
+                    <g fill="#ffe8d1" stroke="#cca17d" stroke-width="2">
+                        <circle cx="50" cy="34" r="11"/>
+                        <circle cx="66" cy="50" r="11"/>
+                        <circle cx="50" cy="66" r="11"/>
+                        <circle cx="34" cy="50" r="11"/>
+                    </g>
+                    <!-- Center Core -->
+                    <circle cx="50" cy="50" r="9" fill="#ffd1b3" stroke="#cca17d" stroke-width="2"/>
+                </svg>
+            </div>
+
+            <!-- Cute Mascot Avatar Header -->
+            <div class="avatar-wrapper">
+                <div class="avatar-ring">
+                    <div class="avatar-inner">
+                        <!-- Cute pixel/chibi mascot illustration -->
+                        <svg viewBox="0 0 120 120" class="mascot-svg">
+                            <!-- Ears -->
+                            <polygon points="26,45 36,18 52,38" fill="#f8c3d9" stroke="#7a4e65" stroke-width="3"/>
+                            <polygon points="94,45 84,18 68,38" fill="#f8c3d9" stroke="#7a4e65" stroke-width="3"/>
+                            <polygon points="30,40 38,24 48,36" fill="#fbe4ee"/>
+                            <polygon points="90,40 82,24 72,36" fill="#fbe4ee"/>
+                            <!-- Body -->
+                            <ellipse cx="60" cy="65" rx="38" ry="34" fill="#fdeef4" stroke="#7a4e65" stroke-width="3"/>
+                            <!-- Cheeks -->
+                            <circle cx="40" cy="68" r="7" fill="#ffb3c6" opacity="0.8"/>
+                            <circle cx="80" cy="68" r="7" fill="#ffb3c6" opacity="0.8"/>
+                            <!-- Eyes -->
+                            <circle cx="47" cy="58" r="4.5" fill="#4a2e35"/>
+                            <circle cx="73" cy="58" r="4.5" fill="#4a2e35"/>
+                            <circle cx="48.5" cy="56.5" r="1.5" fill="#ffffff"/>
+                            <circle cx="74.5" cy="56.5" r="1.5" fill="#ffffff"/>
+                            <!-- Happy Mouth -->
+                            <path d="M56 65 Q60 69 64 65" fill="none" stroke="#7a4e65" stroke-width="2.5" stroke-linecap="round"/>
+                            <!-- Paws -->
+                            <ellipse cx="44" cy="88" rx="8" ry="6" fill="#fdeef4" stroke="#7a4e65" stroke-width="3"/>
+                            <ellipse cx="76" cy="88" rx="8" ry="6" fill="#fdeef4" stroke="#7a4e65" stroke-width="3"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tagline Badge -->
+            <div class="tagline-badge">
+                <span>♡ ONLY FOR YOU..</span>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h1 class="card-title">Happy Birthday</h1>
+            <h2 class="card-subtitle">Muskan <em>(Madam Jii)</em> ♡</h2>
+
+            <!-- Decorative Dashed Divider with Flower -->
+            <div class="card-divider">
+                <span class="divider-icon">🌸</span>
+            </div>
+
+            <!-- Heartfelt Message Body -->
+            <div class="card-message">
+                <p>
+                    Today is yours. A whole little garden of wishes — for every laugh we’ve shared, every silly moment, and every reason you make the world brighter.
+                </p>
+                <p class="late-apology-note">
+                    I know this gift is a little late, but pause for a beat, and let me say it properly with all my heart.
+                </p>
+            </div>
+
+            <!-- Aesthetic Music Player Widget -->
+            <div class="music-player-card">
+                <div class="player-album-art">
+                    <!-- Cute Floral Cover Art -->
+                    <svg viewBox="0 0 80 80" class="album-svg">
+                        <rect width="80" height="80" rx="14" fill="#fff5f8"/>
+                        <!-- Tulips & Flowers -->
+                        <path d="M40 70 Q40 45 40 38" stroke="#7cb57c" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        <path d="M26 70 Q30 50 32 40" stroke="#7cb57c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <path d="M54 70 Q50 50 48 40" stroke="#7cb57c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <!-- Tulip Heads -->
+                        <path d="M40 22 C32 22 30 36 40 38 C50 36 48 22 40 22 Z" fill="#ff758f"/>
+                        <path d="M32 26 C26 26 24 38 32 40 C40 38 38 26 32 26 Z" fill="#ff8fa3"/>
+                        <path d="M48 26 C42 26 40 38 48 40 C56 38 54 26 48 26 Z" fill="#ff4d6d"/>
+                        <text x="40" y="74" font-size="6.5" fill="#c97a8e" text-anchor="middle" font-family="'Quicksand', sans-serif" font-weight="700">BARBAAD</text>
+                    </svg>
+                </div>
+
+                <div class="player-info">
+                    <div class="track-header">
+                        <h3 class="track-title">Barbaad</h3>
+                        <span class="track-subtitle">SAIYAARA • JUBIN NAUTIYAL</span>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-container" id="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+
+                    <div class="time-display">
+                        <span id="current-time">0:00</span>
+                        <span id="total-duration">3:30</span>
+                    </div>
+                </div>
+
+                <!-- Play/Pause Control Button -->
+                <button class="play-btn" id="play-btn" aria-label="Play Barbaad song">
+                    <svg viewBox="0 0 24 24" class="play-icon" id="play-icon">
+                        <path d="M8 5v14l11-7z" fill="currentColor"/>
+                    </svg>
+                    <svg viewBox="0 0 24 24" class="pause-icon" id="pause-icon" style="display: none;">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="currentColor"/>
+                    </svg>
+                </button>
+
+                <!-- Audio Element (Local MP3 support for barbaad.mp3 or music.mp3) -->
+                <audio id="audio-track" preload="metadata">
+                    <source src="./barbaad.mp3" type="audio/mpeg">
+                    <source src="./music.mp3" type="audio/mpeg">
+                </audio>
+
+                <!-- YouTube Background Audio Player for Barbaad (Saiyaara) -->
+                <div id="yt-player-container" style="position: fixed; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;">
+                    <div id="yt-player"></div>
+                </div>
+            </div>
+
+            <!-- Play Prompt Subtitle -->
+            <p class="press-play-caption">
+                press play — i picked this one because it always reminds me of you.
+            </p>
+        </article>
+
+        <!-- Bottom Action Button leading to Album -->
+        <div class="bottom-action-wrapper">
+            <button class="album-cta-button" id="see-album-btn">
+                SEE OUR ALBUM &rarr;
+            </button>
+        </div>
+    </main>
+
+    <script src="./cause.js"></script>
+</body>
+</html>
